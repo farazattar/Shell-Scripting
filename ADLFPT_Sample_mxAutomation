@@ -1,0 +1,33 @@
+VAR
+    robotControl: RobotControlFB;  (* Function block instance for robot control *)
+    disassemblyProcess: DisassemblyProcessFB;  (* Function block instance for disassembly process *)
+
+METHOD MainControl
+    (* Initialize MxAutomation components and setup *)
+    MxAutomation.Init();
+
+    (* Instantiate and initialize function blocks *)
+    robotControl(INIT := TRUE);
+    disassemblyProcess(INIT := TRUE);
+
+    WHILE TRUE DO
+        IF NOT robotControl.toolInHand THEN
+            robotControl.MoveToStartPosition();
+            robotControl.toolInHand := robotControl.PickUpTool();
+        END_IF;
+
+        disassemblyProcess.Execute();  (* Execute the disassembly process *)
+
+        IF robotControl.toolInHand THEN
+            robotControl.toolInHand := robotControl.PlaceTool();
+        END_IF;
+
+        robotControl.MoveToNextPosition();
+
+        (* Add any necessary delay or synchronization mechanisms *)
+    END_WHILE;
+
+    (* Clean up and finalize MxAutomation components *)
+    MxAutomation.Exit();
+END_METHOD
+
