@@ -1,0 +1,14 @@
+PROGRAM MoveToStartPosition
+VAR
+    robot: KUKA;  (* Assuming you have a variable representing the robot *)
+    startPos: ARRAY[1..6] OF REAL := [0, 0, 0, 0, 0, 0];  (* Replace with actual starting joint positions *)
+END_VAR
+
+METHOD MoveToStartPosition: BOOL
+    robot.MoveAbsolute(startPos);  (* Move the robot to the starting joint positions *)
+    IF robot.Moving() THEN
+        RETURN FALSE;  (* Movement in progress *)
+    ELSE
+        RETURN TRUE;   (* Movement completed *)
+    END_IF
+END_METHOD
