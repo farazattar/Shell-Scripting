@@ -1,0 +1,49 @@
+FUNCTION_BLOCK DisassemblyLine
+VAR_INPUT
+    powerToolIn: BOOL; // Input signal indicating the presence of a power tool on the line
+END_VAR
+
+VAR_OUTPUT
+    disassembled: BOOL; // Output signal indicating if the power tool has been disassembled
+END_VAR
+
+VAR
+    conveyorRunning: BOOL := FALSE; // Internal variable to track the state of the conveyor
+    disassemblyToolRunning: BOOL := FALSE; // Internal variable to track the state of the disassembly tool
+END_VAR
+
+METHOD DisassemblyProcess: BOOL
+VAR
+    powerToolDetected: BOOL := FALSE; // Internal variable to detect the presence of a power tool
+    disassembledTool: BOOL := FALSE; // Internal variable to track the disassembly process
+END_VAR
+
+    // Check if a power tool is present on the line
+    powerToolDetected := powerToolIn;
+
+    IF powerToolDetected THEN
+        // Start the conveyor
+        conveyorRunning := TRUE;
+
+        // Start the disassembly tool
+        disassemblyToolRunning := TRUE;
+
+        // Perform the disassembly process
+        // ...
+
+        // Set the output signal to indicate that the power tool has been disassembled
+        disassembled := disassembledTool;
+    ELSE
+        // Stop the conveyor
+        conveyorRunning := FALSE;
+
+        // Stop the disassembly tool
+        disassemblyToolRunning := FALSE;
+
+        // Reset the output signal
+        disassembled := FALSE;
+    END_IF;
+
+    // Return the status of the disassembly process
+    RETURN disassembled;
+END_METHOD
